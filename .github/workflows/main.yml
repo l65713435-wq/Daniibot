@@ -34,7 +34,7 @@ messages=("やったー！最高の運勢です。" "何かいいことがある
     uses: yakumaran/chatwork-action@v1
     with:
       chatwork_room_id: 405432031
-      chatwork_token: c15630a513baa8c2cdd22cbce9f81035
+      chatwork_token: ${{ secrets.CHATWORK_TOKEN }}
       message: |
         【おみくじの結果】
         結果: ${{ env.FORTUNE }}
