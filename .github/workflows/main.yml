@@ -6,7 +6,7 @@ on:
 
 jobs:
   draw_fortune:
-    runs-on: ubuntu-latest
+        runs-on: ubuntu-latest
     steps:
       - name: Install bc and jq
         run: sudo apt-get update && sudo apt-get install bc jq -y
