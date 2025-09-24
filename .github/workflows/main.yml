@@ -43,7 +43,3 @@ jobs:
           -H "X-ChatWorkToken: ${{ secrets.CHATWORK_TOKEN }}" \
           -d "body=${MESSAGE}" \
           "https://api.chatwork.com/v2/rooms/${{ secrets.CHATWORK_ROOM_ID }}/messages"
-
-
-
-
