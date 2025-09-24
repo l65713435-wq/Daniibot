@@ -6,7 +6,7 @@ on:
 
 jobs:
   draw_fortune:
-        runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Install bc and jq
         run: sudo apt-get update && sudo apt-get install bc jq -y
@@ -30,8 +30,10 @@ jobs:
               break
             fi
           done
+
           echo "FORTUNE=${fortunes[$fortune_index]}" >> $GITHUB_ENV
           echo "MESSAGE=${messages[$fortune_index]}" >> $GITHUB_ENV
+
       - name: Send message to ChatWork
         run: |
           #!/bin/bash
