@@ -4,7 +4,7 @@ on:
   repository_dispatch:
     types: [draw-omikuji]
 
-jobs:
+　jobs:
   draw_fortune:
         runs-on: ubuntu-latest
     steps:
