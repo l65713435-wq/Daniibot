@@ -36,11 +36,15 @@ jobs:
           echo "MESSAGE=${messages[$fortune_index]}" >> $GITHUB_ENV
 
       - name: Send message to ChatWork
-        uses: yakumaran/chatwork-action@v1
-        with:
-          chatwork_room_id: ${{ secrets.CHATWORK_ROOM_ID }}
-          chatwork_token: ${{ secrets.CHATWORK_TOKEN }}
-          message: |
-            【おみくじの結果】
-            結果: ${{ env.FORTUNE }}
-            一言: ${{ env.MESSAGE }}
+        run: |
+          #!/bin/bash
+          MESSAGE="【おみくじの結果】\n結果: ${{ env.FORTUNE }}\n一言: ${{ env.MESSAGE }}"
+          curl -s -X POST \
+          -H "X-ChatWorkToken: ${{ secrets.CHATWORK_TOKEN }}" \
+          -d "body=${MESSAGE}" \
+          "https://api.chatwork.com/v2/rooms/${{ secrets.CHATWORK_ROOM_ID }}/messages"
+
+
+このコードなら、外部の依存関係に左右されることなく、確実に動作するはずです。
+
+もし、この新しいコードでも問題が発生した場合は、GitHubの**「Actions」**タブに表示される**エラーメッセージの全文**を教えていただけますか？
