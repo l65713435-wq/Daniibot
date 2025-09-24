@@ -21,7 +21,7 @@ messages=("やったー！最高の運勢です。" "何かいいことがある
       CUMULATIVE_PROB=0
       for i in "${!fortunes[@]}"; do
         CUMULATIVE_PROB=$(echo "$CUMULATIVE_PROB + ${probabilities[$i]}" | bc)
-        if (( $(echo "$RANDOM_NUMBER <= $CUMULATIVE_PROB" | bc -l) )); then
+        if [ $(echo "$RANDOM_NUMBER <= $CUMULATIVE_PROB" | bc -l) -eq 1 ]; then
           fortune_index=$i
           break
         fi
