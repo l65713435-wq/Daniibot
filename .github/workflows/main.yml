@@ -1,5 +1,3 @@
-# This is a GitHub Actions workflow to run an omikuji bot and send the result to ChatWork.
-
 name: Omikuji Bot
 
 on:
