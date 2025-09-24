@@ -7,13 +7,16 @@ jobs:
 draw_fortune:
 runs-on: ubuntu-latest
 steps:
-- name: Draw a normal fortune
-id: normal_fortune
-run: |
-#!/bin/bash
-fortunes=("大吉" "中吉" "小吉" "吉" "末吉" "凶" "大凶" "平" "🌱" "超大吉")
-probabilities=(5 20 20 15 15 10 10 4 0.01 0.01)
-messages=("やったー！最高の運勢です。" "何かいいことがあるかもしれません。" "まあまあ良い運勢です。" "普通の一日になりそう。" "ぼちぼちです。" "気をつけて過ごしましょう。" "今日は静かに過ごしましょう。" "変化はないが、穏やかな一日。" "あなたの努力が芽吹く日です。" "奇跡が起こるかも？！")
+- name: Install bc
+run: sudo apt-get update && sudo apt-get install -y bc
+
+  - name: Draw a normal fortune
+    id: normal_fortune
+    run: |
+      #!/bin/bash
+      fortunes=("大吉" "中吉" "小吉" "吉" "末吉" "凶" "大凶" "平" "🌱" "超大吉")
+      probabilities=(5 20 20 15 15 10 10 4 0.01 0.01)
+      messages=("やったー！最高の運勢です。" "何かいいことがあるかもしれません。" "まあまあ良い運勢です。" "普通の一日になりそう。" "ぼちぼちです。" "気をつけて過ごしましょう。" "今日は静かに過ごしましょう。" "変化はないが、穏やかな一日。" "あなたの努力が芽吹く日です。" "奇跡が起こるかも？！")
 
       fortune_index=-1
       RANDOM_NUMBER=$(echo "scale=2; 100 * $RANDOM / 32767" | bc)
