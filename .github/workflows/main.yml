@@ -45,6 +45,5 @@ jobs:
           "https://api.chatwork.com/v2/rooms/${{ secrets.CHATWORK_ROOM_ID }}/messages"
 
 
-このコードなら、外部の依存関係に左右されることなく、確実に動作するはずです。
 
-もし、この新しいコードでも問題が発生した場合は、GitHubの**「Actions」**タブに表示される**エラーメッセージの全文**を教えていただけますか？
+
