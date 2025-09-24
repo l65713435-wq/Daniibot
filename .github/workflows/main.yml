@@ -6,4 +6,39 @@ on:
 
 jobs:
   draw_fortune:
-    ... (以下は元のコードのまま)
+        runs-on: ubuntu-latest
+    steps:
+      - name: Install bc and jq
+        run: sudo apt-get update && sudo apt-get install bc jq -y
+
+      - name: Draw a normal fortune
+        id: normal_fortune
+        run: |
+          #!/bin/bash
+          fortunes=("大吉" "中吉" "小吉" "吉" "末吉" "凶" "大凶" "平" "🌱" "超大吉")
+          probabilities=(5 20 20 15 15 10 10 4 0.01 0.01)
+          messages=("やったー！最高の運勢です。" "何かいいことがあるかもしれません。" "まあまあ良い運勢です。" "普通の一日になりそう。" "ぼちぼちです。" "気をつけて過ごしましょう。" "今日は静かに過ごしましょう。" "変化はないが、穏やかな一日。" "あなたの努力が芽吹く日です。" "奇跡が起こるかも？！")
+          
+          RANDOM_NUMBER=$(echo "scale=2; 100 * $RANDOM / 32767" | bc)
+          fortune_index=-1
+          
+          CUMULATIVE_PROB=0
+          for i in "${!fortunes[@]}"; do
+            CUMULATIVE_PROB=$(echo "$CUMULATIVE_PROB + ${probabilities[$i]}" | bc)
+            if [ $(echo "$RANDOM_NUMBER <= $CUMULATIVE_PROB" | bc -l) -eq 1 ]; then
+              fortune_index=$i
+              break
+            fi
+          done
+          echo "FORTUNE=${fortunes[$fortune_index]}" >> $GITHUB_ENV
+          echo "MESSAGE=${messages[$fortune_index]}" >> $GITHUB_ENV
+      - name: Send message to ChatWork
+        run: |
+          #!/bin/bash
+          MESSAGE_TEXT="【おみくじの結果】\n結果: ${{ env.FORTUNE }}\n一言: ${{ env.MESSAGE }}"
+          MESSAGE_ENCODED=$(echo -e "${MESSAGE_TEXT}" | jq -sRr @uri)
+          
+          curl -s -X POST \
+            -H "X-ChatWorkToken: ${{ secrets.CHATWORK_TOKEN }}" \
+            -d "body=${MESSAGE_ENCODED}" \
+            "https://api.chatwork.com/v2/rooms/${{ secrets.CHATWORK_ROOM_ID }}/messages"
